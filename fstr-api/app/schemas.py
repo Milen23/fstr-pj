@@ -29,6 +29,7 @@ class LevelSchema(Schema):
 
 
 class PerevalSubmitSchema(Schema):
+    """Схема для создания нового перевала"""
     beauty_title = fields.Str(allow_none=True)
     title = fields.Str(required=True)
     other_titles = fields.Str(allow_none=True)
@@ -43,4 +44,23 @@ class PerevalSubmitSchema(Schema):
     def check_images(self, data, **kwargs):
         if not data.get('images'):
             raise ValidationError('At least one image is required')
+        return data
+
+
+class PerevalUpdateSchema(Schema):
+    """Схема для обновления существующего перевала (без user данных)"""
+    beauty_title = fields.Str(allow_none=True)
+    title = fields.Str(allow_none=True)
+    other_titles = fields.Str(allow_none=True)
+    connect = fields.Str(allow_none=True)
+    add_time = fields.DateTime(allow_none=True, format='%Y-%m-%d %H:%M:%S')
+    coords = fields.Nested(CoordSchema, allow_none=True)
+    level = fields.Nested(LevelSchema, allow_none=True)
+    images = fields.List(fields.Nested(ImageSchema), allow_none=True)
+
+    @post_load
+    def validate_at_least_one_field(self, data, **kwargs):
+        """Проверяем, что хотя бы одно поле для обновления передано"""
+        if not any(data.values()):
+            raise ValidationError('At least one field to update is required')
         return data
