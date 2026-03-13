@@ -8,6 +8,13 @@ bp = Blueprint('api', __name__)
 logger = logging.getLogger(__name__)
 
 
+@bp.route('/submitData', methods=['POST'])
+def submit_data():
+    """
+    Метод для добавления информации о новом перевале
+    """
+    try:
+        # Получаем JSON из запроса
 # ========== МЕТОД 1: POST /submitData (из 1 спринта) ==========
 @bp.route('/submitData', methods=['POST'])
 def submit_data():
