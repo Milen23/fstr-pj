@@ -32,7 +32,8 @@ class PerevalData:
                     phone=user_data['phone']
                 )
                 db.session.add(user)
-                db.session.flush()
+                db.session.flush()  # Чтобы получить id пользователя
+              
 
             # 2. Создаем координаты
             coord = Coord(
